@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Mentor — Closr Early Access</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --card: #111;
+    --border: #1e1e1e;
+    --border2: #2a2a2a;
+    --grey: #161616;
+    --muted: #555;
+    --text: #e0e0e0;
+    --white: #fff;
+    --orange: #c0401a;
+    --orange-light: #e05a2b;
+    --orange-dim: rgba(192,64,26,0.1);
+    --orange-border: rgba(192,64,26,0.22);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    font-family: "DM Sans", sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top-bar { height: 3px; background: var(--orange); width: 100%; }
+
+  .nav {
+    padding: 20px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { display: inline-flex; align-items: baseline; }
+  .logo-main { font-family: "Playfair Display", serif; font-weight: 900; font-size: 24px; color: var(--white); letter-spacing: -0.5px; }
+  .logo-r { font-family: "Playfair Display", serif; font-weight: 900; font-size: 24px; color: var(--white); letter-spacing: -0.5px; position: relative; display: inline-block; }
+  .logo-r::after { content: ""; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2.5px; background: var(--orange); border-radius: 2px; }
+  .nav-badge {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--orange-dim); border: 1px solid var(--orange-border);
+    border-radius: 100px; padding: 5px 14px;
+    font-size: 11px; font-weight: 600; color: var(--orange-light);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .main {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 64px 24px 80px;
+    max-width: 560px; margin: 0 auto; width: 100%;
+    text-align: center;
+  }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 10px; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--orange-light);
+    margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.1s forwards;
+  }
+  .eyebrow-line { width: 24px; height: 1px; background: var(--orange); }
+
+  .headline {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(36px, 7vw, 56px); font-weight: 900;
+    color: var(--white); line-height: 1.05; letter-spacing: -2px;
+    margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+  .headline em { color: var(--orange-light); font-style: normal; }
+
+  .subtext {
+    font-size: 15px; color: var(--muted); line-height: 1.7;
+    max-width: 420px; margin: 0 auto 36px; font-weight: 400;
+    opacity: 0; animation: fadeUp 0.7s ease 0.3s forwards;
+  }
+
+  .perks {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; flex-wrap: wrap; margin-bottom: 40px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+  .perk {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--grey); border: 1px solid var(--border2);
+    border-radius: 100px; padding: 6px 14px;
+    font-size: 11px; font-weight: 500; color: #888;
+  }
+
+  .form-card {
+    width: 100%; background: var(--card);
+    border: 1px solid var(--border); border-radius: 24px;
+    padding: 36px 32px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards;
+  }
+
+  .form-label-top {
+    font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--orange-light);
+    margin-bottom: 18px; text-align: left;
+  }
+
+  .spots-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding: 10px 14px;
+    background: rgba(192,64,26,0.06); border: 1px solid var(--orange-border);
+    border-radius: 10px;
+  }
+  .spots-text { font-size: 11px; color: var(--orange-light); font-weight: 600; }
+  .spots-bar-wrap { flex: 1; height: 3px; background: #2a2a2a; border-radius: 2px; margin: 0 12px; overflow: hidden; }
+  .spots-bar-fill { height: 100%; width: 61%; background: var(--orange); border-radius: 2px; }
+  .spots-count { font-size: 10px; color: #555; white-space: nowrap; }
+
+  .fields { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  label.field-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #444; }
+
+  input, select {
+    background: #0e0e0e; border: 1px solid #222; border-radius: 11px;
+    padding: 13px 15px; font-size: 14px; color: var(--white);
+    font-family: "DM Sans", sans-serif; outline: none; width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none; appearance: none;
+  }
+  input::placeholder { color: #2e2e2e; }
+  input:focus, select:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(192,64,26,0.08); }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23444' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    padding-right: 36px; cursor: pointer;
+  }
+  select option { background: #111; color: #fff; }
+
+  .submit-btn {
+    width: 100%; background: var(--orange); color: #fff; border: none;
+    border-radius: 13px; padding: 16px 0; font-family: "DM Sans", sans-serif;
+    font-size: 15px; font-weight: 600; cursor: pointer; letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.1s; margin-top: 14px;
+  }
+  .submit-btn:hover { background: #d4481e; }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .form-note { font-size: 11px; color: #333; text-align: center; margin-top: 12px; line-height: 1.5; }
+
+  .success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 48px 0; }
+  .success-icon { width: 68px; height: 68px; border-radius: 50%; background: var(--orange-dim); border: 1px solid var(--orange-border); display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px; }
+  .success-title { font-family: "Playfair Display", serif; font-size: 26px; font-weight: 700; color: var(--white); letter-spacing: -0.5px; margin-bottom: 10px; }
+  .success-sub { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 340px; }
+  .success-sub span { color: var(--orange-light); font-weight: 600; }
+
+  /* Social proof */
+  .social-proof {
+    margin-top: 48px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.7s forwards;
+  }
+  .proof-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #333; margin-bottom: 16px; }
+  .proof-row { display: flex; align-items: center; justify-content: center; }
+  .proof-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--black); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; margin-left: -8px; font-family: "Playfair Display", serif; }
+  .proof-text { font-size: 12px; color: #444; margin-left: 12px; }
+  .proof-text span { color: #888; font-weight: 500; }
+
+  /* Mentor link */
+  .mentor-link {
+    margin-top: 32px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards;
+    font-size: 12px; color: #333;
+  }
+  .mentor-link a { color: var(--orange-light); text-decoration: none; font-weight: 600; }
+
+  .footer { border-top: 1px solid var(--border); padding: 20px 32px; text-align: center; font-size: 10px; color: #2a2a2a; letter-spacing: 1.5px; text-transform: uppercase; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  @media (max-width: 480px) {
+    .row { grid-template-columns: 1fr; }
+    .form-card { padding: 26px 20px; }
+    .nav { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<nav class="nav">
+  <div class="logo"><span class="logo-main">Clos</span><span class="logo-r">r</span></div>
+  <div class="nav-badge"><div class="badge-dot"></div>Early Access</div>
+</nav>
+
+<div class="main">
+
+  <div class="eyebrow">
+    <div class="eyebrow-line"></div>
+    For Learners
+    <div class="eyebrow-line"></div>
+  </div>
+
+  <h1 class="headline">Find the mentor<br />you <em>actually need.</em></h1>
+
+  <p class="subtext">
+    Closr is building the go-to platform for sales and business mentorship. Get early access and be the first to connect with vetted experts in your exact niche.
+  </p>
+
+  <div class="perks">
+    <div class="perk"><span>🎯</span> Industry-matched mentors</div>
+    <div class="perk"><span>📹</span> Live group sessions</div>
+    <div class="perk"><span>⚡</span> 1:1 strategy calls</div>
+    <div class="perk"><span>🏅</span> Closr Certified tracks</div>
+  </div>
+
+  <div class="form-card">
+    <div id="formContent">
+      <div class="form-label-top">Reserve Your Spot</div>
+
+      <div class="spots-row">
+        <span class="spots-text">🔥 Filling fast</span>
+        <div class="spots-bar-wrap"><div class="spots-bar-fill"></div></div>
+        <span class="spots-count">39 of 100 left</span>
+      </div>
+
+      <form id="studentForm" novalidate>
+        <div class="fields">
+
+          <div class="row">
+            <div class="field">
+              <label class="field-label">First Name *</label>
+              <input type="text" name="firstName" placeholder="Alex" required />
+            </div>
+            <div class="field">
+              <label class="field-label">Last Name *</label>
+              <input type="text" name="lastName" placeholder="Johnson" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Email Address *</label>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Phone Number *</label>
+            <input type="tel" name="phone" id="phoneInput" placeholder="(555) 000-0000" required />
+          </div>
+
+          <div class="field">
+            <label class="field-label">What do you want to learn? *</label>
+            <select name="goal" required>
+              <option value="" disabled selected>Select your focus area</option>
+              <option>Sales & Closing</option>
+              <option>Cold Outreach & Prospecting</option>
+              <option>Real Estate Sales</option>
+              <option>B2B & SaaS Sales</option>
+              <option>Business Development</option>
+              <option>Leadership & Management</option>
+              <option>Entrepreneurship & Startups</option>
+              <option>Finance & Investing</option>
+              <option>Marketing & Branding</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Your Current Experience Level *</label>
+            <select name="level" required>
+              <option value="" disabled selected>Where are you right now?</option>
+              <option>Complete beginner — just starting out</option>
+              <option>Some experience — want to level up</option>
+              <option>Intermediate — looking to break through</option>
+              <option>Advanced — want expert refinement</option>
+            </select>
+          </div>
+
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Get Early Access →</button>
+        <p class="form-note">Free to join · No commitment · We'll notify you at launch</p>
+      </form>
+    </div>
+
+    <div class="success" id="successScreen">
+      <div class="success-icon">🎯</div>
+      <div class="success-title">You're on the list.</div>
+      <p class="success-sub">Welcome to Closr early access. We'll reach out <span>soon</span> with your mentor matches and everything you need to get started.</p>
+    </div>
+  </div>
+
+  <div class="social-proof">
+    <div class="proof-label">Learners already signed up</div>
+    <div class="proof-row">
+      <div class="proof-avatar" style="background:#c0401a;margin-left:0">AJ</div>
+      <div class="proof-avatar" style="background:#15803d">MK</div>
+      <div class="proof-avatar" style="background:#1d4ed8">SR</div>
+      <div class="proof-avatar" style="background:#7c3aed">DL</div>
+      <div class="proof-avatar" style="background:#b45309">TC</div>
+      <span class="proof-text"><span>+94 others</span> have reserved their spot</span>
+    </div>
+  </div>
+
+  <div class="mentor-link">
+    Are you an expert? <a href="https://tryclosr.github.io/closr-mentor-waitlist">Apply to become a mentor →</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  © 2025 Closr &nbsp;·&nbsp; Your Industry. Your Mentors. Your Breakthrough.
+</div>
+
+<script>
+  document.getElementById("phoneInput").addEventListener("input", function() {
+    let v = this.value.replace(/\D/g, "").slice(0, 10);
+    if (v.length >= 7) v = "(" + v.slice(0,3) + ") " + v.slice(3,6) + "-" + v.slice(6);
+    else if (v.length >= 4) v = "(" + v.slice(0,3) + ") " + v.slice(3);
+    else if (v.length > 0) v = "(" + v;
+    this.value = v;
+  });
+
+  document.getElementById("studentForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let valid = true;
+    this.querySelectorAll("[required]").forEach(f => {
+      const empty = f.tagName === "SELECT" ? !f.value : !f.value.trim();
+      if (empty) {
+        valid = false;
+        f.style.borderColor = "#c0401a";
+        f.addEventListener("input", () => f.style.borderColor = "", { once: true });
+        f.addEventListener("change", () => f.style.borderColor = "", { once: true });
+      }
+    });
+    if (!valid) return;
+
+    const btn = document.getElementById("submitBtn");
+    btn.textContent = "Saving your spot…";
+    btn.disabled = true;
+
+    const formData = {
+      firstName: this.querySelector("[name=firstName]").value.trim(),
+      lastName:  this.querySelector("[name=lastName]").value.trim(),
+      email:     this.querySelector("[name=email]").value.trim(),
+      phone:     this.querySelector("[name=phone]").value.trim(),
+      goal:      this.querySelector("[name=goal]").value,
+      level:     this.querySelector("[name=level]").value
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbxR8cxdRby4hvOJLWXAvgUMn_GStijSmdNplHJ6fCBddGG2ZKADGKmshMNa6696xp_aFA/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    })
+    .then(() => {
+      document.getElementById("formContent").style.display = "none";
+      document.getElementById("successScreen").style.display = "flex";
+    })
+    .catch(() => {
+      document.getElementById("formContent").style.display = "none";
+      document.getElementById("successScreen").style.display = "flex";
+    });
+  });
+</script>
+</body>
+</html>
